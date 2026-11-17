@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Publish Button Animation</title><link rel="stylesheet" href="styles.css"></head>
+<body>
+<main class="page">
+ <h1>Publish Button<br><span>Animation</span></h1>
+ <section class="stage">
+  <div class="half half-light"><button class="publish-btn dark" data-publish aria-live="polite"><span class="icon-wrap"><svg class="cloud" viewBox="0 0 24 24"><path d="M7.2 18.2h10.1a4.1 4.1 0 0 0 .4-8.2A5.8 5.8 0 0 0 6.6 9a4.7 4.7 0 0 0 .6 9.2Z"/><path class="arrow" d="M12 16V9m-3 3 3-3 3 3"/></svg><span class="spinner"></span><svg class="check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="m8 12 2.6 2.6L16.5 9"/></svg></span><span class="btn-label">Publish</span></button></div>
+  <div class="half half-dark"><button class="publish-btn light" data-publish aria-live="polite"><span class="icon-wrap"><svg class="cloud" viewBox="0 0 24 24"><path d="M7.2 18.2h10.1a4.1 4.1 0 0 0 .4-8.2A5.8 5.8 0 0 0 6.6 9a4.7 4.7 0 0 0 .6 9.2Z"/><path class="arrow" d="M12 16V9m-3 3 3-3 3 3"/></svg><span class="spinner"></span><svg class="check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="m8 12 2.6 2.6L16.5 9"/></svg></span><span class="btn-label">Publish</span></button></div>
+ </section>
+ <div class="handle">● <span>_code_and_chill_</span></div>
+ <section class="code-grid">
+  <article class="code-card"><header><i class="html"></i>index.html</header><pre><code><em>&lt;!-- one button, three states --&gt;</em>
+<span class="tag">&lt;button</span> class="publish"
+  data-publish<span class="tag">&gt;</span>
+  <span class="tag">&lt;span</span> class="icon-wrap"<span class="tag">&gt;</span>
+    <span class="tag">&lt;svg</span> class="cloud"<span class="tag">&gt;</span>
+      <span class="tag">&lt;path</span> d="..."<span class="tag">/&gt;</span>
+    <span class="tag">&lt;/svg&gt;</span>
+    <span class="tag">&lt;span</span> class="spinner"<span class="tag">&gt;&lt;/span&gt;</span>
+    <span class="tag">&lt;svg</span> class="check"<span class="tag">&gt;</span>...<span class="tag">&lt;/svg&gt;</span>
+  <span class="tag">&lt;/span&gt;</span>
+  <span class="tag">&lt;span</span> class="label"<span class="tag">&gt;</span>Publish<span class="tag">&lt;/span&gt;</span>
+<span class="tag">&lt;/button&gt;</span></code></pre></article>
+  <article class="code-card"><header><i class="css"></i>styles.css</header><pre><code><em>/* the button is a tiny state
+   machine; the label swaps while
+   the icon gets its own motion */</em>
+.publish.is-loading .cloud {
+  opacity: 0;
+  transform: translateY(-8px);
+}
+.publish.is-loading .spinner {
+  opacity: 1;
+  animation: spin .7s linear infinite;
+}
+.publish.is-done .cloud,
+.publish.is-done .spinner {
+  opacity: 0;
+}
+.publish.is-done .check {
+  opacity: 1;
+  transform: scale(1);
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}</code></pre></article>
+  <article class="code-card"><header><i class="js"></i>app.js</header><pre><code><em>// publish → loading → done
+// each button owns its own state</em>
+const buttons = document
+  .querySelectorAll('[data-publish]');
+
+buttons.forEach(button => {
+  button.addEventListener('click', () => {
+    if (button.dataset.state ===
+        'loading') return;
+
+    button.dataset.state = 'loading';
+    button.classList.add('is-loading');
+    button.querySelector('.label')
+      .textContent = 'Loading';
+
+    setTimeout(() => {
+      button.dataset.state = 'done';
+      button.classList.remove('is-loading');
+      button.classList.add('is-done');
+      button.querySelector('.label')
+        .textContent = 'Done';
+    }, 1450);
+  });
+});</code></pre></article>
+ </section>
+ <p class="hint">Click either button to publish · Click again to replay</p>
+</main>
+<div class="toast" id="toast"></div><script src="app.js"></script></body></html>
